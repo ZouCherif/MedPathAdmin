@@ -1,10 +1,16 @@
 // ignore_for_file: sized_box_for_whitespace
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
+import 'colors.dart';
 import 'get_role.dart';
 import 'getdata.dart';
+import 'show_error_dialog.dart';
 
 // ignore: must_be_immutable
 class ProfilPage1 extends StatefulWidget {
@@ -16,30 +22,25 @@ class ProfilPage1 extends StatefulWidget {
 }
 
 class _ProfilPage1State extends State<ProfilPage1> {
+  late final TextEditingController edit;
+  TextEditingController dateinput = TextEditingController();
   var imageUrl = "assets/avatar.png";
-  var telephone = "0662541966";
-  var nss = "1563486513254165";
-  var pheight = 177;
-  var pweight = 67;
-  var sexewidth = 80;
   var usid = FirebaseAuth.instance.currentUser!.uid;
+  String? formattedDate;
 
-  var colorBAD = Colors.transparent;
+  var colorBAD = Colors.transparent; 
 
-  late final TextEditingController rapport;
-  
-
-     @override
+  @override
   void initState() {
-    rapport = TextEditingController();
+    edit = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    rapport.dispose();
+    edit.dispose();
     super.dispose();
-  }  
+  }
    
 
   String imc(taille,poids) {
@@ -51,6 +52,15 @@ class _ProfilPage1State extends State<ProfilPage1> {
       colorBAD=Colors.red;
       return 'BAD';
     }
+  }
+
+  String list(listitems){
+    String aaficher = '';
+    for (var element in listitems) {
+      // ignore: prefer_interpolation_to_compose_strings
+      aaficher = (aaficher +', '+ element);
+    }
+    return aaficher;
   }
 
   @override
@@ -97,18 +107,114 @@ class _ProfilPage1State extends State<ProfilPage1> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Text(
-                      content['full name'],
-                      style: const TextStyle(
-                        fontSize: 18.0,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                        color: Color.fromARGB(255, 44, 98, 143),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: Text(
+                          content['full name'],
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                            color: Color.fromARGB(255, 44, 98, 143),
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(width: 0.001 * size.width,),
+                      IconButton(
+                        icon: const Icon(Icons.mode_edit_outline,size: 20,),
+                        color: Colors.grey.shade400,
+                        onPressed: (){
+                          showDialog(
+                          context: context,
+                          builder: (context){
+                            return Dialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(60),
+                                ),
+                              elevation: 16,
+                              child: Container(
+                                height: 220,
+                                width: 307,
+                                child: Column(
+                                  children: [
+                                    const SizedBox(height: 15,),
+                                    const Text("edit this information",
+                                      style: TextStyle(fontSize: 20,color: bluefnc),
+                                    ),
+                                    const SizedBox(height: 15,),
+                                    Container(
+                                      height: 50,
+                                      width: 259,
+                                      child: TextField(
+                                        controller: edit,
+                                        decoration: InputDecoration(labelText: "enter the new information here",
+                                        labelStyle: const TextStyle(fontSize: 15,color: bluefnc),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(15),
+                                          borderSide: const BorderSide(color: blueclr)
+                                          ), 
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 20,),
+                                    SizedBox(
+                                      width: 259,
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        onPressed: () async {
+                                          try{
+                                            await FirebaseFirestore.instance.collection('users').doc(widget.id).update({'full name' : edit.text});
+                                            setState(() {
+                                              content['full name'] = edit.text;
+                                            });
+                                            // ignore: use_build_context_synchronously
+                                            Navigator.of(context).pop();
+                                          }catch (e){
+                                            showErrorDialog(context, e.toString());
+                                          }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            shadowColor: blueclr,
+                                            elevation: 4,
+                                            primary: blueclr,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(10))),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: const [
+                                            Icon(Icons.search_outlined),
+                                            SizedBox(width: 5,),
+                                            Text(
+                                              "edit",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                        },
+                      ),
+                    ],
                   ),
+                  
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -225,6 +331,143 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                               ),
                                             ),
                                           ),
+                                       SizedBox(width: 0.001 * size.width,),
+                                      IconButton(
+                                      icon: const Icon(Icons.mode_edit_outline,size: 20,),
+                                      color: Colors.grey.shade400,
+                                      onPressed: (){
+                                          showDialog(
+                                          context: context,
+                                          builder: (context){
+                                            return Dialog(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(60),
+                                                ),
+                                              elevation: 16,
+                                              child: Container(
+                                                height: 220,
+                                                width: 307,
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(height: 15,),
+                                                    const Text("edit this information",
+                                                      style: TextStyle(fontSize: 20,color: bluefnc),
+                                                    ),
+                                                    const SizedBox(height: 15,),
+                                                    Container(
+                                                      height: 50,
+                                                      width: 259,
+                                                      child: Container(
+                                                        height: 0.049 * size.height,
+                                                        width: 440,
+                                                        child: Center(
+                                                            child: TextField(
+                                                          controller:
+                                                              dateinput, //editing controller of this TextField
+                                                          decoration: InputDecoration(
+                                                            enabledBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(10),
+                                                              borderSide: const BorderSide(
+                                                                color: Color.fromARGB(253, 209, 209, 209),
+                                                                width: 1.5,
+                                                              ),
+                                                            ),
+                                                            focusedBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(10),
+                                                              borderSide: const BorderSide(
+                                                                color: Color.fromARGB(253, 209, 209, 209),
+                                                                width: 1.5,
+                                                              ),
+                                                            ),
+                                                            icon: const Icon(Icons
+                                                                .calendar_today), //icon of text field
+                                                            labelText:
+                                                                "Enter Date Of Birth", //label text of field
+                                                            labelStyle: const TextStyle(
+                                                              color: bluefnc,
+                                                              fontFamily: 'poppins',
+                                                              fontSize: 13,
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
+                                                          ),
+                                                          readOnly:
+                                                              true, //set it true, so that user will not able to edit text
+                                                          onTap: () async {
+                                                            DateTime? pickedDate = await showDatePicker(
+                                                                context: context,
+                                                                initialDate: DateTime.now(),
+                                                                firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                                                                lastDate: DateTime.now());
+
+                                                            if (pickedDate != null) {//pickedDate output format => 2021-03-10 00:00:00.000
+                                                              formattedDate =DateFormat('yyyy-MM-dd').format(pickedDate); //formatted date output using intl package =>  2021-03-16
+                                                              //you can implement different kind of Date Format here according to your requirement
+
+                                                              setState(() {
+                                                                dateinput.text =
+                                                                    formattedDate!; //set output date to TextField value.
+                                                              });
+                                                            } else {
+                                                              // ignore: avoid_print
+                                                              print("Date is not selected");
+                                                            }
+                                                          },
+                                                        ))),
+                                                    ),
+                                                    const SizedBox(height: 20,),
+                                                    SizedBox(
+                                                      width: 259,
+                                                      height: 50,
+                                                      child: ElevatedButton(
+                                                        onPressed: () async {
+                                                          try{
+                                                            await FirebaseFirestore.instance.collection('users').doc(widget.id).update({'date of birth' : formattedDate});
+                                                            setState(() {
+                                                              content['date of birth'] = formattedDate;
+                                                            });
+                                                            // ignore: use_build_context_synchronously
+                                                            Navigator.of(context).pop();
+                                                          }catch (e){
+                                                            showErrorDialog(context, e.toString());
+                                                          }
+                                                        },
+                                                        style: ElevatedButton.styleFrom(
+                                                            shadowColor: blueclr,
+                                                            elevation: 4,
+                                                            primary: blueclr,
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.circular(10))),
+                                                        child: Row(
+                                                          mainAxisSize: MainAxisSize.min,
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: const [
+                                                            Icon(Icons.search_outlined),
+                                                            SizedBox(width: 5,),
+                                                            Text(
+                                                              "edit",
+                                                              style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 20,
+                                                                fontFamily: "Poppins",
+                                                                fontWeight: FontWeight.w600,
+                                                              ),
+                                                            ),
+                                                            
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+
+                                      ),
                                         ],
                                       ),
                                     ),
@@ -261,6 +504,96 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                               ),
                                             ),
                                           ),
+                                          SizedBox(width: 0.001 * size.width,),
+                                      IconButton(
+                                      icon: const Icon(Icons.mode_edit_outline,size: 20,),
+                                      color: Colors.grey.shade400,
+                                      onPressed: (){
+                                        showDialog(
+                                        context: context,
+                                        builder: (context){
+                                          return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(60),
+                                              ),
+                                            elevation: 16,
+                                            child: Container(
+                                              height: 220,
+                                              width: 307,
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(height: 15,),
+                                                  const Text("edit this information",
+                                                    style: TextStyle(fontSize: 20,color: bluefnc),
+                                                  ),
+                                                  const SizedBox(height: 15,),
+                                                  Container(
+                                                    height: 50,
+                                                    width: 259,
+                                                    child: TextField(
+                                                      controller: edit,
+                                                      decoration: InputDecoration(labelText: "enter the new information here",
+                                                      labelStyle: const TextStyle(fontSize: 15,color: bluefnc),
+                                                      enabledBorder: OutlineInputBorder(
+                                                        borderRadius: BorderRadius.circular(15),
+                                                        borderSide: const BorderSide(color: blueclr)
+                                                        ), 
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 20,),
+                                                  SizedBox(
+                                                    width: 259,
+                                                    height: 50,
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        try{
+                                                          await FirebaseFirestore.instance.collection('users').doc(widget.id).update({'place of birth' : edit.text});
+                                                          setState(() {
+                                                            content['place of birth'] = edit.text;
+                                                          });
+                                                          // ignore: use_build_context_synchronously
+                                                          Navigator.of(context).pop();
+                                                        }catch (e){
+                                                          showErrorDialog(context, e.toString());
+                                                        }
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                          shadowColor: blueclr,
+                                                          elevation: 4,
+                                                          primary: blueclr,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(10))),
+                                                      child: Row(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: const [
+                                                          Icon(Icons.search_outlined),
+                                                          SizedBox(width: 5,),
+                                                          Text(
+                                                            "edit",
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 20,
+                                                              fontFamily: "Poppins",
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
+                                                          ),
+                                                          
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                      },
+                                      ),
                                         ],
                                       ),
                                     ),
@@ -299,6 +632,96 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                                 ),
                                               ),
                                             ),
+                                            SizedBox(width: 0.001 * size.width,),
+                                      IconButton(
+                                      icon: const Icon(Icons.mode_edit_outline,size: 20,),
+                                      color: Colors.grey.shade400,
+                                      onPressed: (){
+                                        showDialog(
+                                        context: context,
+                                        builder: (context){
+                                          return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(60),
+                                              ),
+                                            elevation: 16,
+                                            child: Container(
+                                              height: 220,
+                                              width: 307,
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(height: 15,),
+                                                  const Text("edit this information",
+                                                    style: TextStyle(fontSize: 20,color: bluefnc),
+                                                  ),
+                                                  const SizedBox(height: 15,),
+                                                  Container(
+                                                    height: 50,
+                                                    width: 259,
+                                                    child: TextField(
+                                                      controller: edit,
+                                                      decoration: InputDecoration(labelText: "enter the new information here",
+                                                      labelStyle: const TextStyle(fontSize: 15,color: bluefnc),
+                                                      enabledBorder: OutlineInputBorder(
+                                                        borderRadius: BorderRadius.circular(15),
+                                                        borderSide: const BorderSide(color: blueclr)
+                                                        ), 
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 20,),
+                                                  SizedBox(
+                                                    width: 259,
+                                                    height: 50,
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        try{
+                                                          await FirebaseFirestore.instance.collection('users').doc(widget.id).update({'phone number' : edit.text});
+                                                          setState(() {
+                                                            content['phone number'] = edit.text;
+                                                          });
+                                                          // ignore: use_build_context_synchronously
+                                                          Navigator.of(context).pop();
+                                                        }catch (e){
+                                                          showErrorDialog(context, e.toString());
+                                                        }
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                          shadowColor: blueclr,
+                                                          elevation: 4,
+                                                          primary: blueclr,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(10))),
+                                                      child: Row(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: const [
+                                                          Icon(Icons.search_outlined),
+                                                          SizedBox(width: 5,),
+                                                          Text(
+                                                            "edit",
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 20,
+                                                              fontFamily: "Poppins",
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
+                                                          ),
+                                                          
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                      },
+                                      ),
                                             const SizedBox(width: 15),
                                           ],
                                         ),
@@ -338,6 +761,96 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                                 ),
                                               ),
                                             ),
+                                            SizedBox(width: 0.001 * size.width,),
+                                            IconButton(
+                                            icon: const Icon(Icons.mode_edit_outline,size: 20,),
+                                            color: Colors.grey.shade400,
+                                            onPressed: (){
+                                              showDialog(
+                                        context: context,
+                                        builder: (context){
+                                          return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(60),
+                                              ),
+                                            elevation: 16,
+                                            child: Container(
+                                              height: 220,
+                                              width: 307,
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(height: 15,),
+                                                  const Text("edit this information",
+                                                    style: TextStyle(fontSize: 20,color: bluefnc),
+                                                  ),
+                                                  const SizedBox(height: 15,),
+                                                  Container(
+                                                    height: 50,
+                                                    width: 259,
+                                                    child: TextField(
+                                                      controller: edit,
+                                                      decoration: InputDecoration(labelText: "enter the new information here",
+                                                      labelStyle: const TextStyle(fontSize: 15,color: bluefnc),
+                                                      enabledBorder: OutlineInputBorder(
+                                                        borderRadius: BorderRadius.circular(15),
+                                                        borderSide: const BorderSide(color: blueclr)
+                                                        ), 
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 20,),
+                                                  SizedBox(
+                                                    width: 259,
+                                                    height: 50,
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        try{
+                                                          await FirebaseFirestore.instance.collection('users').doc(widget.id).update({'number' : edit.text});
+                                                          setState(() {
+                                                            content['number'] = edit.text;
+                                                          });
+                                                          // ignore: use_build_context_synchronously
+                                                          Navigator.of(context).pop();
+                                                        }catch (e){
+                                                          showErrorDialog(context, e.toString());
+                                                        }
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                          shadowColor: blueclr,
+                                                          elevation: 4,
+                                                          primary: blueclr,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(10))),
+                                                      child: Row(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: const [
+                                                          Icon(Icons.search_outlined),
+                                                          SizedBox(width: 5,),
+                                                          Text(
+                                                            "edit",
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 20,
+                                                              fontFamily: "Poppins",
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
+                                                          ),
+                                                          
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                            },
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -356,7 +869,7 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                           children: [
                                             FittedBox(
                                               child: Text(
-                                                "Allergies ",
+                                                "Allergies: ",
                                                 style: TextStyle(
                                                   color: const Color(0xff406083),
                                                   fontSize: size.width * 0.03333333,
@@ -367,7 +880,7 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                             ),
                                             FittedBox(
                                               child: Text(
-                                                "pinisciline",
+                                                content['allergies'].toString(),
                                                 style: TextStyle(
                                                   color: const Color(0xffc4c4c4),
                                                   fontSize: size.width * 0.03333333,
@@ -376,6 +889,144 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                                 ),
                                               ),
                                             ),
+                                            SizedBox(width: 0.001 * size.width,),
+                                      IconButton(
+                                      icon: const Icon(Icons.mode_edit_outline,size: 20,),
+                                      color: Colors.grey.shade400,
+                                      onPressed: (){
+                                        showDialog(
+                                        context: context,
+                                        builder: (context){
+                                          return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(60),
+                                              ),
+                                            elevation: 16,
+                                            child: Container(
+                                              height: 220,
+                                              width: 307,
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(height: 15,),
+                                                  const FittedBox(
+                                                    child: Text("enter the information that you want\n to add or to remove from the list",
+                                                      style: TextStyle(fontSize: 15,color: Colors.blue),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 10,),
+                                                  Container(
+                                                    height: 50,
+                                                    width: 259,
+                                                    child: TextField(
+                                                      controller: edit,
+                                                      decoration: InputDecoration(labelText: "enter the information here",
+                                                      labelStyle: const TextStyle(fontSize: 15,color: bluefnc),
+                                                      enabledBorder: OutlineInputBorder(
+                                                        borderRadius: BorderRadius.circular(15),
+                                                        borderSide: const BorderSide(color: blueclr)
+                                                        ), 
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 20,),
+                                                  SizedBox(
+                                                    width: 259,
+                                                    height: 50,
+                                                    child: FittedBox(
+                                                      child: Row(
+                                                        children: [
+                                                          ElevatedButton(
+                                                            onPressed: () async {
+                                                              try{
+                                                                setState(() {
+                                                                  content['allergies'].remove(edit.text);
+                                                                });
+                                                                await FirebaseFirestore.instance.collection('users').doc(widget.id).update({'allergies' : content['allergies']});
+                                                                // ignore: use_build_context_synchronously
+                                                                Navigator.of(context).pop();
+                                                              }catch (e){
+                                                                showErrorDialog(context, e.toString());
+                                                              }
+                                                            },
+                                                            style: ElevatedButton.styleFrom(
+                                                                shadowColor: blueclr,
+                                                                elevation: 4,
+                                                                primary: blueclr,
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(10))),
+                                                            child: Row(
+                                                              mainAxisSize: MainAxisSize.min,
+                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                              children: const [
+                                                                Icon(Icons.remove),
+                                                                SizedBox(width: 5,),
+                                                                Text(
+                                                                  "Remove",
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontSize: 20,
+                                                                    fontFamily: "Poppins",
+                                                                    fontWeight: FontWeight.w600,
+                                                                  ),
+                                                                ),
+                                                                
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(width: 10,),
+                                                          ElevatedButton(
+                                                            onPressed: () async {
+                                                              try{
+                                                              setState(() {
+                                                                  content['allergies'].add(edit.text);
+                                                                });
+                                                                await FirebaseFirestore.instance.collection('users').doc(widget.id).update({'allergies' : content['allergies']});
+                                                                // ignore: use_build_context_synchronously
+                                                                Navigator.of(context).pop();
+                                                              }catch (e){
+                                                                showErrorDialog(context, e.toString());
+                                                              }
+                                                            },
+                                                            style: ElevatedButton.styleFrom(
+                                                                shadowColor: blueclr,
+                                                                elevation: 4,
+                                                                primary: blueclr,
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(10))),
+                                                            child: Row(
+                                                              mainAxisSize: MainAxisSize.min,
+                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                              children: const [
+                                                                Icon(Icons.add),
+                                                                SizedBox(width: 5,),
+                                                                Text(
+                                                                  "Add",
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontSize: 20,
+                                                                    fontFamily: "Poppins",
+                                                                    fontWeight: FontWeight.w600,
+                                                                  ),
+                                                                ),
+                                                                
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                      },
+                                      ),
                                           ],
                                         ),
                                       ),
@@ -395,7 +1046,7 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                           children: [
                                             FittedBox(
                                               child: Text(
-                                                "chronical diseases ",
+                                                "chronical diseases: ",
                                                 style: TextStyle(
                                                   color: const Color(0xff406083),
                                                   fontSize: size.width * 0.03333333,
@@ -406,7 +1057,7 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                             ),
                                             FittedBox(
                                               child: Text(
-                                                "diabetic",
+                                                content['diseases'].toString(),
                                                 style: TextStyle(
                                                   color: const Color(0xffc4c4c4),
                                                   fontSize: size.width * 0.03333333,
@@ -415,6 +1066,144 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                                 ),
                                               ),
                                             ),
+                                            SizedBox(width: 0.001 * size.width,),
+                                      IconButton(
+                                      icon: const Icon(Icons.mode_edit_outline,size: 20,),
+                                      color: Colors.grey.shade400,
+                                      onPressed: (){
+                                        showDialog(
+                                        context: context,
+                                        builder: (context){
+                                          return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(60),
+                                              ),
+                                            elevation: 16,
+                                            child: Container(
+                                              height: 220,
+                                              width: 307,
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(height: 15,),
+                                                  const FittedBox(
+                                                    child: Text("enter the information that you want\n to add or to remove from the list",
+                                                      style: TextStyle(fontSize: 15,color: Colors.blue),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 10,),
+                                                  Container(
+                                                    height: 50,
+                                                    width: 259,
+                                                    child: TextField(
+                                                      controller: edit,
+                                                      decoration: InputDecoration(labelText: "enter the information here",
+                                                      labelStyle: const TextStyle(fontSize: 15,color: bluefnc),
+                                                      enabledBorder: OutlineInputBorder(
+                                                        borderRadius: BorderRadius.circular(15),
+                                                        borderSide: const BorderSide(color: blueclr)
+                                                        ), 
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 20,),
+                                                  SizedBox(
+                                                    width: 259,
+                                                    height: 50,
+                                                    child: FittedBox(
+                                                      child: Row(
+                                                        children: [
+                                                          ElevatedButton(
+                                                            onPressed: () async {
+                                                              try{
+                                                                setState(() {
+                                                                  content['diseases'].remove(edit.text);
+                                                                });
+                                                                await FirebaseFirestore.instance.collection('users').doc(widget.id).update({'diseases' : content['diseases']});
+                                                                // ignore: use_build_context_synchronously
+                                                                Navigator.of(context).pop();
+                                                              }catch (e){
+                                                                showErrorDialog(context, e.toString());
+                                                              }
+                                                            },
+                                                            style: ElevatedButton.styleFrom(
+                                                                shadowColor: blueclr,
+                                                                elevation: 4,
+                                                                primary: blueclr,
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(10))),
+                                                            child: Row(
+                                                              mainAxisSize: MainAxisSize.min,
+                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                              children: const [
+                                                                Icon(Icons.remove),
+                                                                SizedBox(width: 5,),
+                                                                Text(
+                                                                  "Remove",
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontSize: 20,
+                                                                    fontFamily: "Poppins",
+                                                                    fontWeight: FontWeight.w600,
+                                                                  ),
+                                                                ),
+                                                                
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(width: 10,),
+                                                          ElevatedButton(
+                                                            onPressed: () async {
+                                                              try{
+                                                              setState(() {
+                                                                  content['diseases'].add(edit.text);
+                                                                });
+                                                                await FirebaseFirestore.instance.collection('users').doc(widget.id).update({'diseases' : content['diseases']});
+                                                                // ignore: use_build_context_synchronously
+                                                                Navigator.of(context).pop();
+                                                              }catch (e){
+                                                                showErrorDialog(context, e.toString());
+                                                              }
+                                                            },
+                                                            style: ElevatedButton.styleFrom(
+                                                                shadowColor: blueclr,
+                                                                elevation: 4,
+                                                                primary: blueclr,
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(10))),
+                                                            child: Row(
+                                                              mainAxisSize: MainAxisSize.min,
+                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                              children: const [
+                                                                Icon(Icons.add),
+                                                                SizedBox(width: 5,),
+                                                                Text(
+                                                                  "Add",
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontSize: 20,
+                                                                    fontFamily: "Poppins",
+                                                                    fontWeight: FontWeight.w600,
+                                                                  ),
+                                                                ),
+                                                                
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                      },
+                                      ),
                                           ],
                                         ),
                                       ),
@@ -467,17 +1256,31 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            const FittedBox(
-                                              child: Text(
-                                                "Sexe:",
-                                                style: TextStyle(
-                                                  color: Color(0xff406083),
-                                                  fontSize: 23,
-                                                  fontFamily: "Poppins",
-                                                  fontWeight: FontWeight.w600,
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                const FittedBox(
+                                                  child: Text(
+                                                    "Sexe:",
+                                                    style: TextStyle(
+                                                      color: Color(0xff406083),
+                                                      fontSize: 23,
+                                                      fontFamily: "Poppins",
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                                SizedBox(width: 0.001 * size.width,),
+                                                IconButton(
+                                                icon: const Icon(Icons.mode_edit_outline,size: 20,),
+                                                color: Colors.grey.shade400,
+                                                onPressed: (){
+
+                                                },
+                                                ),
+                                              ],
                                             ),
+                                            
                                             Container(
                                               width: size.width * 0.106666,
                                               height: 45,
@@ -584,18 +1387,32 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
                                             children: [
-                                              const FittedBox(
-                                                child: Text(
-                                                  "Group \n Sanguin:",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    color: Color(0xff406083),
-                                                    fontSize: 22,
-                                                    fontFamily: "Poppins",
-                                                    fontWeight: FontWeight.w600,
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  const FittedBox(
+                                                    child: Text(
+                                                      "Group \n Sanguin:",
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: Color(0xff406083),
+                                                        fontSize: 22,
+                                                        fontFamily: "Poppins",
+                                                        fontWeight: FontWeight.w600,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
+                                                  SizedBox(width: 0.001 * size.width,),
+                                                  IconButton(
+                                                  icon: const Icon(Icons.mode_edit_outline,size: 20,),
+                                                  color: Colors.grey.shade400,
+                                                  onPressed: (){
+
+                                                  },
+                                                  ),
+                                                ],
                                               ),
+                                              
                                               const SizedBox(height: 10),
                                                   FittedBox(
                                                   child: Text(

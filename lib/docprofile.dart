@@ -846,8 +846,7 @@ class _DocProfileState extends State<DocProfile> {
                                             SizedBox(width: 0.001 * size.width,),
                                       IconButton(
                                       icon: const Icon(Icons.mode_edit_outline,size: 20,),
-                                      color:
-                                           Colors.grey.shade400,
+                                      color: Colors.grey.shade400,
                                       onPressed: () {
                                         showDialog(
                                         context: context,
