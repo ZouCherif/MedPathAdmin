@@ -1,7 +1,13 @@
 // ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace
 
+import 'dart:developer';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import '../colors.dart';
 import 'show_error_dialog.dart';
@@ -21,7 +27,40 @@ class _DocInformationsState extends State<DocInformations> {
   late final TextEditingController _doctornum;
   late final TextEditingController _specialite;
   late final TextEditingController _location;
+  PlatformFile? pickedFile;
+  UploadTask? uploadtask;
 
+  Future selectFile()async{
+  final result=await FilePicker.platform.pickFiles();
+  if (result == null)return;
+  setState(() {
+    pickedFile = result.files.first;
+  });
+  }
+
+  Future uploadfile(user)async{
+    final path = 'docpic/${pickedFile!.name}';
+    final file = File(pickedFile!.path!);
+    final ref = FirebaseStorage.instance.ref().child(path);
+    uploadtask = ref.putFile(file);
+    final snapshot = await uploadtask!.whenComplete((){});
+    final urldownload = await snapshot.ref.getDownloadURL();
+    FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
+      'imgURL' : urldownload,
+    });
+  }
+
+  // void _openPicker()async{
+  //   final result;
+  //   result = await FilePicker.platform.pickFiles();
+  //   if(result!=null){
+  //     Uint8List uploadFile = result.files.single.bytes;
+  //     String fileName=result.files.single.name;
+  //     Reference refrence=FirebaseStorage.instance.ref().child('lnfzf');
+  //     final UploadTask uploadTask = refrence.putData(uploadFile);
+  //   }
+
+  // }
 
     @override
   void initState() {
@@ -223,7 +262,9 @@ class _DocInformationsState extends State<DocInformations> {
                     ),
                     Container(
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () async{
+                          await selectFile();
+                        },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -294,7 +335,10 @@ class _DocInformationsState extends State<DocInformations> {
                                     'specialite' : _specialite.text,
                                     'localisation' : _location.text,
                                   });
+                                  await uploadfile(user);
+                                  // ignore: use_build_context_synchronously
                                   showdialog(context, 'Doctor acount has been created succefuly');
+                                  
                                 }catch (e){
                                   await showErrorDialog(context, 'Error: ${e.toString()}');
                                 }
