@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +28,26 @@ class _ProfilPage1State extends State<ProfilPage1> {
   var imageUrl = "assets/avatar.png";
   var usid = FirebaseAuth.instance.currentUser!.uid;
   String? formattedDate;
+  String dropdownvalue2 = 'O +';
+  
+  // List of items in our dropdown menu
+  var itemss = [
+    'O +',
+    'O -',
+    'A +',
+    'A -',
+    'B +',
+    'B -',
+    'AB +',
+    'AB -',
+  ];
+  String dropdownvalue = 'male';
+  
+  // List of items in our dropdown menu
+  var items = [
+    'male',
+    'female'
+  ];
 
   var colorBAD = Colors.transparent; 
 
@@ -269,7 +290,7 @@ class _ProfilPage1State extends State<ProfilPage1> {
                       children: [
                         Container(
                           width: size.width * 0.65641,
-                          height: size.height * 0.33,
+                          height: size.height * 0.37,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -277,7 +298,7 @@ class _ProfilPage1State extends State<ProfilPage1> {
                             children: [
                               Container(
                                 width: size.width * 0.65641,
-                                height: size.height * 0.33,
+                                height: size.height * 0.37,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   boxShadow: const [
@@ -291,7 +312,7 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                 ),
                                 padding: const EdgeInsets.only(
                                   left: 9,
-                                  right: 24,
+                                  right: 15,
                                   top: 16,
                                   bottom: 15,
                                 ),
@@ -1219,292 +1240,479 @@ class _ProfilPage1State extends State<ProfilPage1> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
-                          child: SizedBox(
+                          child: Container(
                             width: size.width * 0.21794871794871,
-                            height: size.height * 0.33,
-                            child: Row(
+                            height: size.height * 0.37,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color(0x19000000),
+                                  blurRadius: 80,
+                                  offset: Offset(0, 0),
+                                ),
+                              ],
+                              color: Colors.white,
+                            ),
+                            child: Column(
                               mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  width: size.width * 0.21794871794871,
-                                  height: size.height * 0.33,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Color(0x19000000),
-                                        blurRadius: 80,
-                                        offset: Offset(0, 0),
-                                      ),
-                                    ],
-                                    color: Colors.white,
-                                  ),
+                                  width: 13.73333 * size.width,
+                                  height: 0.19 * size.height,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        width: 13.73333 * size.width,
-                                        height: 0.13 * size.height,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                const FittedBox(
-                                                  child: Text(
-                                                    "Sexe:",
-                                                    style: TextStyle(
-                                                      color: Color(0xff406083),
-                                                      fontSize: 23,
-                                                      fontFamily: "Poppins",
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(width: 0.001 * size.width,),
-                                                IconButton(
-                                                icon: const Icon(Icons.mode_edit_outline,size: 20,),
-                                                color: Colors.grey.shade400,
-                                                onPressed: (){
-
-                                                },
-                                                ),
-                                              ],
-                                            ),
-                                            
-                                            Container(
-                                              width: size.width * 0.106666,
-                                              height: 45,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.spaceEvenly,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  // ignore: unrelated_type_equality_checks
-                                                  if (content['sexe'] == 'F')
-                                                    FittedBox(
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: const [
-                                                          FittedBox(
-                                                            child: Text(
-                                                              "F",
-                                                              style: TextStyle(
-                                                                color: Color(
-                                                                    0xffc4c4c4),
-                                                                fontSize: 30,
-                                                                fontFamily:
-                                                                    "Poppins",
-                                                                fontWeight:
-                                                                    FontWeight.w700,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 2.0),
-                                                            child: Icon(
-                                                              Icons.female,
-                                                              color: Color.fromRGBO(
-                                                                  255,
-                                                                  133,
-                                                                  143,
-                                                                  100),
-                                                              size: 20,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    )
-                                                  else
-                                                    FittedBox(
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: const [
-                                                          FittedBox(
-                                                            child: Text(
-                                                              "M",
-                                                              style: TextStyle(
-                                                                color: Color(
-                                                                    0xffc4c4c4),
-                                                                fontSize: 30,
-                                                                fontFamily:
-                                                                    "Poppins",
-                                                                fontWeight:
-                                                                    FontWeight.w700,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 2.0),
-                                                            child: Icon(
-                                                              Icons.male,
-                                                              color: Colors.blue,
-                                                              size: 20,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    )
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Flexible(
-                                        child: Container(
-                                          width: 13.73333 * size.width,
-                                          height: 0.19 * size.height,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  const FittedBox(
-                                                    child: Text(
-                                                      "Group \n Sanguin:",
-                                                      textAlign: TextAlign.center,
-                                                      style: TextStyle(
-                                                        color: Color(0xff406083),
-                                                        fontSize: 22,
-                                                        fontFamily: "Poppins",
-                                                        fontWeight: FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 0.001 * size.width,),
-                                                  IconButton(
-                                                  icon: const Icon(Icons.mode_edit_outline,size: 20,),
-                                                  color: Colors.grey.shade400,
-                                                  onPressed: (){
-
-                                                  },
-                                                  ),
-                                                ],
-                                              ),
-                                              
-                                              const SizedBox(height: 10),
-                                                  FittedBox(
-                                                  child: Text(
-                                                    content['groupe sanguin'],
-                                                    style: const TextStyle(
-                                                      color:  Color(0xffc4c4c4),
-                                                      fontSize: 30,
-                                                      fontFamily: "Poppins",
-                                                      fontWeight: FontWeight.w700,
-                                                    ),
-                                                  ),
-                                                )
-                                              // else if (sang == Sang.Onegative)
-                                              //   const FittedBox(
-                                              //     child: Text(
-                                              //       "O-",
-                                              //       style: TextStyle(
-                                              //         color: Color(0xffc4c4c4),
-                                              //         fontSize: 27,
-                                              //         fontFamily: "Poppins",
-                                              //         fontWeight: FontWeight.w700,
-                                              //       ),
-                                              //     ),
-                                              //   )
-                                              // else if (sang == Sang.Anegative)
-                                              //   Text(
-                                              //     "A-",
-                                              //     style: TextStyle(
-                                              //       color: const Color(0xffc4c4c4),
-                                              //       fontSize: 0.06 * size.width,
-                                              //       fontFamily: "Poppins",
-                                              //       fontWeight: FontWeight.w700,
-                                              //     ),
-                                              //   )
-                                              // else if (sang == Sang.Apositive)
-                                              //   Text(
-                                              //     "A+",
-                                              //     style: TextStyle(
-                                              //       color: const Color(0xffc4c4c4),
-                                              //       fontSize: 0.06 * size.width,
-                                              //       fontFamily: "Poppins",
-                                              //       fontWeight: FontWeight.w700,
-                                              //     ),
-                                              //   )
-                                              // else if (sang == Sang.Bnegative)
-                                              //   Text(
-                                              //     "B-",
-                                              //     style: TextStyle(
-                                              //       color: const Color(0xffc4c4c4),
-                                              //       fontSize: 0.06 * size.width,
-                                              //       fontFamily: "Poppins",
-                                              //       fontWeight: FontWeight.w700,
-                                              //     ),
-                                              //   )
-                                              // else if (sang == Sang.Bpositive)
-                                              //   Text(
-                                              //     "B+",
-                                              //     style: TextStyle(
-                                              //       color: const Color(0xffc4c4c4),
-                                              //       fontSize: 0.06 * size.width,
-                                              //       fontFamily: "Poppins",
-                                              //       fontWeight: FontWeight.w700,
-                                              //     ),
-                                              //   )
-                                              // else if (sang == Sang.ABnegative)
-                                              //   Text(
-                                              //     "AB-",
-                                              //     style: TextStyle(
-                                              //       color: const Color(0xffc4c4c4),
-                                              //       fontSize: 0.06 * size.width,
-                                              //       fontFamily: "Poppins",
-                                              //       fontWeight: FontWeight.w700,
-                                              //     ),
-                                              //   )
-                                              // else if (sang == Sang.ABpositive)
-                                              //   FittedBox(
-                                              //     child: Text(
-                                              //       "AB+",
-                                              //       style: TextStyle(
-                                              //         color:
-                                              //             const Color(0xffc4c4c4),
-                                              //         fontSize: 0.06 * size.width,
-                                              //         fontFamily: "Poppins",
-                                              //         fontWeight: FontWeight.w700,
-                                              //       ),
-                                              //     ),
-                                              //   )
-                                            ],
+                                      const FittedBox(
+                                        child: Text(
+                                          "Sexe:",
+                                          style: TextStyle(
+                                            color: Color(0xff406083),
+                                            fontSize: 23,
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
                                       ),
+                                      
+                                      IconButton(
+                                      icon: const Icon(Icons.mode_edit_outline,size: 18,),
+                                      color: Colors.grey.shade400,
+                                      onPressed: (){
+                                        showDialog(
+                                        context: context,
+                                        builder: (context){
+                                          return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(60),
+                                              ),
+                                            elevation: 16,
+                                            child: Container(
+                                              height: 220,
+                                              width: 307,
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(height: 15,),
+                                                  const Text("edit this information",
+                                                    style: TextStyle(fontSize: 20,color: bluefnc),
+                                                  ),
+                                                  const SizedBox(height: 15,),
+                                                  Container(
+                                                    height: 50,
+                                                    width: 259,
+                                                    child: DropdownButtonFormField2(
+                                                            scrollbarRadius: const Radius.circular(10),
+                                                            focusColor: Colors.white,
+                                                            decoration: InputDecoration(
+                                                                border: OutlineInputBorder(
+                                                                    borderSide: const BorderSide(
+                                                                        color: Color.fromRGBO(
+                                                                            253, 209, 209, 100),
+                                                                        width: 2),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(10))),
+                                                            value: dropdownvalue,
+                                                            icon: const Icon(Icons.keyboard_arrow_down),
+                                                            items: items.map((String items) {
+                                                              return DropdownMenuItem(
+                                                                value: items,
+                                                                child: Text(
+                                                                  items,
+                                                                  style: const TextStyle(
+                                                                    color: Color(0xff406083),
+                                                                    fontSize: 12,
+                                                                    fontFamily: "Poppins",
+                                                                    fontWeight: FontWeight.w600,
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }).toList(),
+                                                            onChanged: (String? newValue) {
+                                                              setState(() {
+                                                                dropdownvalue = newValue!;
+                                                              });
+                                                            },
+                                                          ),
+                                                  ),
+                                                  const SizedBox(height: 20,),
+                                                  SizedBox(
+                                                    width: 259,
+                                                    height: 50,
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        try{
+                                                          await FirebaseFirestore.instance.collection('users').doc(widget.id).update({'sexe' : dropdownvalue});
+                                                          setState(() {
+                                                            content['sexe'] = dropdownvalue;
+                                                          });
+                                                          // ignore: use_build_context_synchronously
+                                                          Navigator.of(context).pop();
+                                                        }catch (e){
+                                                          showErrorDialog(context, e.toString());
+                                                        }
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                          shadowColor: blueclr,
+                                                          elevation: 4,
+                                                          primary: blueclr,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(10))),
+                                                      child: Row(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: const [
+                                                          Icon(Icons.search_outlined),
+                                                          SizedBox(width: 5,),
+                                                          Text(
+                                                            "edit",
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 20,
+                                                              fontFamily: "Poppins",
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
+                                                          ),
+                                                          
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                      },
+                                      ),
+                                      
+                                      Container(
+                                        width: size.width * 0.106666,
+                                        height: 45,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            // ignore: unrelated_type_equality_checks
+                                            if (content['sexe'] == 'female')
+                                              FittedBox(
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment
+                                                          .center,
+                                                  children: const [
+                                                    FittedBox(
+                                                      child: Text(
+                                                        "F",
+                                                        style: TextStyle(
+                                                          color: Color(
+                                                              0xffc4c4c4),
+                                                          fontSize: 30,
+                                                          fontFamily:
+                                                              "Poppins",
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.only(
+                                                              left: 2.0),
+                                                      child: Icon(
+                                                        Icons.female,
+                                                        color: Color.fromRGBO(
+                                                            255,
+                                                            133,
+                                                            143,
+                                                            100),
+                                                        size: 20,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            else
+                                              FittedBox(
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment
+                                                          .center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: const [
+                                                    FittedBox(
+                                                      child: Text(
+                                                        "M",
+                                                        style: TextStyle(
+                                                          color: Color(
+                                                              0xffc4c4c4),
+                                                          fontSize: 30,
+                                                          fontFamily:
+                                                              "Poppins",
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.only(
+                                                              left: 2.0),
+                                                      child: Icon(
+                                                        Icons.male,
+                                                        color: Colors.blue,
+                                                        size: 20,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                          ],
+                                        ),
+                                      ),
                                     ],
+                                  ),
+                                ),
+                                
+                                Flexible(
+                                  child: Container(
+                                    width: 13.73333 * size.width,
+                                    height: 0.20 * size.height,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const FittedBox(
+                                          child: Text(
+                                            "Group \n Sanguin:",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Color(0xff406083),
+                                              fontSize: 20,
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                        IconButton(
+                                        icon: const Icon(Icons.mode_edit_outline,size: 18,),
+                                        color: Colors.grey.shade400,
+                                        onPressed: (){
+                                          showDialog(
+                                        context: context,
+                                        builder: (context){
+                                          return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(60),
+                                              ),
+                                            elevation: 16,
+                                            child: Container(
+                                              height: 220,
+                                              width: 307,
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(height: 15,),
+                                                  const Text("edit this information",
+                                                    style: TextStyle(fontSize: 20,color: bluefnc),
+                                                  ),
+                                                  const SizedBox(height: 15,),
+                                                  Container(
+                                                    height: 50,
+                                                    width: 259,
+                                                    child: DropdownButtonFormField2(
+                                                            scrollbarRadius: const Radius.circular(10),
+                                                            focusColor: Colors.white,
+                                                            decoration: InputDecoration(
+                                                                border: OutlineInputBorder(
+                                                                    borderSide: const BorderSide(
+                                                                        color: Color.fromRGBO(
+                                                                            253, 209, 209, 100),
+                                                                        width: 2),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(10))),
+                                                            value: dropdownvalue2,
+                                                            icon: const Icon(Icons.keyboard_arrow_down),
+                                                            items: itemss.map((String itemss) {
+                                                              return DropdownMenuItem(
+                                                                value: itemss,
+                                                                child: Text(
+                                                                  itemss,
+                                                                  style: const TextStyle(
+                                                                    color: Color(0xff406083),
+                                                                    fontSize: 12,
+                                                                    fontFamily: "Poppins",
+                                                                    fontWeight: FontWeight.w600,
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }).toList(),
+                                                            onChanged: (String? newValue) {
+                                                              setState(() {
+                                                                dropdownvalue2 = newValue!;
+                                                              });
+                                                            },
+                                                          ),
+                                                  ),
+                                                  const SizedBox(height: 20,),
+                                                  SizedBox(
+                                                    width: 259,
+                                                    height: 50,
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        try{
+                                                          await FirebaseFirestore.instance.collection('users').doc(widget.id).update({'groupe sanguin' : dropdownvalue2});
+                                                          setState(() {
+                                                            content['groupe sanguin'] = dropdownvalue2;
+                                                          });
+                                                          // ignore: use_build_context_synchronously
+                                                          Navigator.of(context).pop();
+                                                        }catch (e){
+                                                          showErrorDialog(context, e.toString());
+                                                        }
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                          shadowColor: blueclr,
+                                                          elevation: 4,
+                                                          primary: blueclr,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(10))),
+                                                      child: Row(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: const [
+                                                          Icon(Icons.search_outlined),
+                                                          SizedBox(width: 5,),
+                                                          Text(
+                                                            "edit",
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 20,
+                                                              fontFamily: "Poppins",
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
+                                                          ),
+                                                          
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                        },
+                                        ),
+                                        
+                                            FittedBox(
+                                            child: Text(
+                                              content['groupe sanguin'],
+                                              style: const TextStyle(
+                                                color:  Color(0xffc4c4c4),
+                                                fontSize: 30,
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          )
+                                        // else if (sang == Sang.Onegative)
+                                        //   const FittedBox(
+                                        //     child: Text(
+                                        //       "O-",
+                                        //       style: TextStyle(
+                                        //         color: Color(0xffc4c4c4),
+                                        //         fontSize: 27,
+                                        //         fontFamily: "Poppins",
+                                        //         fontWeight: FontWeight.w700,
+                                        //       ),
+                                        //     ),
+                                        //   )
+                                        // else if (sang == Sang.Anegative)
+                                        //   Text(
+                                        //     "A-",
+                                        //     style: TextStyle(
+                                        //       color: const Color(0xffc4c4c4),
+                                        //       fontSize: 0.06 * size.width,
+                                        //       fontFamily: "Poppins",
+                                        //       fontWeight: FontWeight.w700,
+                                        //     ),
+                                        //   )
+                                        // else if (sang == Sang.Apositive)
+                                        //   Text(
+                                        //     "A+",
+                                        //     style: TextStyle(
+                                        //       color: const Color(0xffc4c4c4),
+                                        //       fontSize: 0.06 * size.width,
+                                        //       fontFamily: "Poppins",
+                                        //       fontWeight: FontWeight.w700,
+                                        //     ),
+                                        //   )
+                                        // else if (sang == Sang.Bnegative)
+                                        //   Text(
+                                        //     "B-",
+                                        //     style: TextStyle(
+                                        //       color: const Color(0xffc4c4c4),
+                                        //       fontSize: 0.06 * size.width,
+                                        //       fontFamily: "Poppins",
+                                        //       fontWeight: FontWeight.w700,
+                                        //     ),
+                                        //   )
+                                        // else if (sang == Sang.Bpositive)
+                                        //   Text(
+                                        //     "B+",
+                                        //     style: TextStyle(
+                                        //       color: const Color(0xffc4c4c4),
+                                        //       fontSize: 0.06 * size.width,
+                                        //       fontFamily: "Poppins",
+                                        //       fontWeight: FontWeight.w700,
+                                        //     ),
+                                        //   )
+                                        // else if (sang == Sang.ABnegative)
+                                        //   Text(
+                                        //     "AB-",
+                                        //     style: TextStyle(
+                                        //       color: const Color(0xffc4c4c4),
+                                        //       fontSize: 0.06 * size.width,
+                                        //       fontFamily: "Poppins",
+                                        //       fontWeight: FontWeight.w700,
+                                        //     ),
+                                        //   )
+                                        // else if (sang == Sang.ABpositive)
+                                        //   FittedBox(
+                                        //     child: Text(
+                                        //       "AB+",
+                                        //       style: TextStyle(
+                                        //         color:
+                                        //             const Color(0xffc4c4c4),
+                                        //         fontSize: 0.06 * size.width,
+                                        //         fontFamily: "Poppins",
+                                        //         fontWeight: FontWeight.w700,
+                                        //       ),
+                                        //     ),
+                                        //   )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -1650,7 +1858,91 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                       icon: const Icon(Icons.mode_edit_outline),
                                       color:
                                           const Color.fromRGBO(209, 209, 209, 100),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        showDialog(
+                                        context: context,
+                                        builder: (context){
+                                          return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(60),
+                                              ),
+                                            elevation: 16,
+                                            child: Container(
+                                              height: 220,
+                                              width: 307,
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(height: 15,),
+                                                  const Text("edit this information",
+                                                    style: TextStyle(fontSize: 20,color: bluefnc),
+                                                  ),
+                                                  const SizedBox(height: 15,),
+                                                  Container(
+                                                    height: 50,
+                                                    width: 259,
+                                                    child: TextField(
+                                                      controller: edit,
+                                                      decoration: InputDecoration(labelText: "enter the new information here",
+                                                      labelStyle: const TextStyle(fontSize: 15,color: bluefnc),
+                                                      enabledBorder: OutlineInputBorder(
+                                                        borderRadius: BorderRadius.circular(15),
+                                                        borderSide: const BorderSide(color: blueclr)
+                                                        ), 
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 20,),
+                                                  SizedBox(
+                                                    width: 259,
+                                                    height: 50,
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        try{
+                                                          await FirebaseFirestore.instance.collection('users').doc(widget.id).update({'weight' : edit.text});
+                                                          setState(() {
+                                                            content['weight'] = edit.text;
+                                                          });
+                                                          // ignore: use_build_context_synchronously
+                                                          Navigator.of(context).pop();
+                                                        }catch (e){
+                                                          showErrorDialog(context, e.toString());
+                                                        }
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                          shadowColor: blueclr,
+                                                          elevation: 4,
+                                                          primary: blueclr,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(10))),
+                                                      child: Row(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: const [
+                                                          Icon(Icons.search_outlined),
+                                                          SizedBox(width: 5,),
+                                                          Text(
+                                                            "edit",
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 20,
+                                                              fontFamily: "Poppins",
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
+                                                          ),
+                                                          
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                      },
                                     )),
                               ],
                             ),
@@ -1709,75 +2001,6 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                   ),
                                 ),
                               ),
-                              // Positioned(
-                              //   left: 100,
-                              //   top: 50,
-                              //   child: SizedBox(
-                              //     width: 0.46 * size.width,
-                              //     height: 19,
-                              //     child: Row(
-                              //       mainAxisSize: MainAxisSize.min,
-                              //       mainAxisAlignment: MainAxisAlignment.end,
-                              //       crossAxisAlignment: CrossAxisAlignment.center,
-                              //       children: [
-                              //         const Text(
-                              //           "Doctor’s review ",
-                              //           style: TextStyle(
-                              //             color: Color(0xffc4c4c4),
-                              //             fontSize: 9,
-                              //           ),
-                              //         ),
-                              //         const SizedBox(width: 12),
-                              //         Container(
-                              //           width: 52,
-                              //           height: 19,
-                              //           child: Row(
-                              //             mainAxisSize: MainAxisSize.min,
-                              //             mainAxisAlignment:
-                              //                 MainAxisAlignment.center,
-                              //             crossAxisAlignment:
-                              //                 CrossAxisAlignment.center,
-                              //             children: [
-                              //               FittedBox(
-                              //                 child: Container(
-                              //                   width: 52,
-                              //                   height: 19,
-                              //                   decoration: BoxDecoration(
-                              //                     borderRadius:
-                              //                         BorderRadius.circular(8),
-                              //                     color: const Color(0xffff858f),
-                              //                   ),
-                              //                   padding: const EdgeInsets.symmetric(
-                              //                     horizontal: 16,
-                              //                     vertical: 2,
-                              //                   ),
-                              //                   child: Row(
-                              //                     mainAxisSize: MainAxisSize.min,
-                              //                     mainAxisAlignment:
-                              //                         MainAxisAlignment.center,
-                              //                     crossAxisAlignment:
-                              //                         CrossAxisAlignment.center,
-                              //                     children: const [
-                              //                       FittedBox(
-                              //                         child: Text(
-                              //                           "Bad",
-                              //                           style: TextStyle(
-                              //                             color: Colors.white,
-                              //                             fontSize: 10,
-                              //                           ),
-                              //                         ),
-                              //                       ),
-                              //                     ],
-                              //                   ),
-                              //                 ),
-                              //               ),
-                              //             ],
-                              //           ),
-                              //         ),
-                              //       ],
-                              //     ),
-                              //   ),
-                              // ),
                               const Positioned(
                                 left: 145,
                                 top: 17,
@@ -1797,7 +2020,91 @@ class _ProfilPage1State extends State<ProfilPage1> {
                                   child: IconButton(
                                     icon: const Icon(Icons.mode_edit_outline),
                                     color: const Color.fromRGBO(209, 209, 209, 100),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context){
+                                          return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(60),
+                                              ),
+                                            elevation: 16,
+                                            child: Container(
+                                              height: 220,
+                                              width: 307,
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(height: 15,),
+                                                  const Text("edit this information",
+                                                    style: TextStyle(fontSize: 20,color: bluefnc),
+                                                  ),
+                                                  const SizedBox(height: 15,),
+                                                  Container(
+                                                    height: 50,
+                                                    width: 259,
+                                                    child: TextField(
+                                                      controller: edit,
+                                                      decoration: InputDecoration(labelText: "enter the new information here",
+                                                      labelStyle: const TextStyle(fontSize: 15,color: bluefnc),
+                                                      enabledBorder: OutlineInputBorder(
+                                                        borderRadius: BorderRadius.circular(15),
+                                                        borderSide: const BorderSide(color: blueclr)
+                                                        ), 
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 20,),
+                                                  SizedBox(
+                                                    width: 259,
+                                                    height: 50,
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        try{
+                                                          await FirebaseFirestore.instance.collection('users').doc(widget.id).update({'height' : edit.text});
+                                                          setState(() {
+                                                            content['height'] = edit.text;
+                                                          });
+                                                          // ignore: use_build_context_synchronously
+                                                          Navigator.of(context).pop();
+                                                        }catch (e){
+                                                          showErrorDialog(context, e.toString());
+                                                        }
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                          shadowColor: blueclr,
+                                                          elevation: 4,
+                                                          primary: blueclr,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(10))),
+                                                      child: Row(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: const [
+                                                          Icon(Icons.search_outlined),
+                                                          SizedBox(width: 5,),
+                                                          Text(
+                                                            "edit",
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 20,
+                                                              fontFamily: "Poppins",
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
+                                                          ),
+                                                          
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
                                   )),
                             ],
                           ),
