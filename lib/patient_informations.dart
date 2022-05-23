@@ -310,7 +310,7 @@ class _PatientInformationsState extends State<PatientInformations> {
                             ),
 
                             Container(
-                              height: 47,
+                              height: 50,
                               width: 530,
                               child: Padding(
                                 padding: const EdgeInsets.only(
@@ -331,13 +331,15 @@ class _PatientInformationsState extends State<PatientInformations> {
                                   items: items.map((String items) {
                                     return DropdownMenuItem(
                                       value: items,
-                                      child: Text(
-                                        items,
-                                        style: const TextStyle(
-                                          color: Color(0xff406083),
-                                          fontSize: 12,
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w600,
+                                      child: FittedBox(
+                                        child: Text(
+                                          items,
+                                          style: const TextStyle(
+                                            color: Color(0xff406083),
+                                            fontSize: 12,
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                       ),
                                     );
@@ -368,13 +370,13 @@ class _PatientInformationsState extends State<PatientInformations> {
                                       "Height(cm) :",
                                       style: TextStyle(
                                         color: Color(0xff406083),
-                                        fontSize: 8,
+                                        fontSize: 14,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(width: 0.003),
+                                  
                                   Container(
                                     width: 0.09 * size.width,
                                     height: 0.042 * size.height,
@@ -404,13 +406,13 @@ class _PatientInformationsState extends State<PatientInformations> {
                                       "Weight(Kg) :",
                                       style: TextStyle(
                                         color: Color(0xff406083),
-                                        fontSize: 8,
+                                        fontSize: 14,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(width: 0.006),
+                                  
                                   Container(
                                     width: 0.10 * size.width,
                                     height: 0.042 * size.height,

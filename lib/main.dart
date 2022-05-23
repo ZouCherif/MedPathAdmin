@@ -20,11 +20,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const PatientInformations(),
+      home: const Homepage(),
       routes: {
         loginRoute : (context) => const LoginScreen(),
         registerRoute : (context) => const FirstPage(),
