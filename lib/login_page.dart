@@ -1,4 +1,5 @@
 // import 'dart:developer' show log;
+import 'package:admin/colors.dart';
 import 'package:admin/show_error_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,12 +36,12 @@ class _LoginScreenState extends State<LoginScreen> {
   int value = 0;
   bool positive = false;
   String bro = 'bro';
-  var color = const Color(0xff0dbed8);
+  
   @override
   Widget build(BuildContext context) {
-  
     return Scaffold(
-      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: bgcolor,
       body: Center(
         child: Padding(
         padding: const EdgeInsets.only(top: 90.0),
@@ -66,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 fontSize: 30.0,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.bold,
-                color: Color.fromRGBO(64, 96, 131, 100),
+                color: bluefnc,
               ),
             ),
             const SizedBox(
@@ -80,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontSize: 25.0,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.normal,
-                  color: Color.fromARGB(255, 44, 98, 143),
+                  color: bluefnc,
                 ),
               ),
             ),
@@ -103,13 +104,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelStyle: const TextStyle(fontSize: 15),
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
-                            color: Color(0xff0dbed8), width: 2,
+                            color: blueclr, width: 2,
                           ),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
-                            color: Color(0xff0dbed8), width: 2,
+                            color: blueclr, width: 2,
                           ),
                           borderRadius: BorderRadius.circular(15),
                         ),
@@ -139,12 +140,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: const BorderSide(
-                          color: Color(0xff0dbed8),
+                          color: blueclr,
                           width: 2),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
-                            color: Color(0xff0dbed8), width: 2,
+                            color: blueclr, width: 2,
                           ),
                           borderRadius: BorderRadius.circular(15),
                         ),
@@ -220,9 +221,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         }                      
                       },                        
                       style: ElevatedButton.styleFrom(
-                        shadowColor: color,
+                        shadowColor: blueclr,
                         elevation: 10,
-                        primary: color,
+                        primary: blueclr,
                         shape: RoundedRectangleBorder(
                           borderRadius:BorderRadius.circular(15),
                         ),

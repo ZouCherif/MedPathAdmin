@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace
 
-import 'dart:developer';
+
+
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -98,12 +98,14 @@ class _DocInformationsState extends State<DocInformations> {
             color: Colors.white,
           ),
           child: Scaffold(
-            backgroundColor: Colors.transparent,
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Colors.white,
             appBar: AppBar(
               iconTheme: const IconThemeData(color: bluefnc),
               toolbarHeight: size.height * 0.1,
               shadowColor: Colors.transparent,
-              backgroundColor: Colors.transparent,
+              elevation: 0,
+              backgroundColor: Colors.white,
               title: const FittedBox(
                 child: Text(
                   "General Doctor informations",
@@ -168,6 +170,7 @@ class _DocInformationsState extends State<DocInformations> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
+                        maxLength: 10,
                       ),
                     ),
 
@@ -205,7 +208,7 @@ class _DocInformationsState extends State<DocInformations> {
                           hintText: "Specialite",
 
                           hintStyle: const TextStyle(
-                            color: Color(0xff406083),
+                            color: bluefnc,
                             fontSize: 13,
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w600,
@@ -249,7 +252,7 @@ class _DocInformationsState extends State<DocInformations> {
                               const Icon(Icons.location_on_rounded),
 
                           hintStyle: const TextStyle(
-                            color: Color(0xff406083),
+                            color: bluefnc,
                             fontSize: 13,
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w600,
@@ -289,7 +292,7 @@ class _DocInformationsState extends State<DocInformations> {
                                     child: Text(
                                       "Upload a picture",
                                       style: TextStyle(
-                                        color: Color(0xff406083),
+                                        color: bluefnc,
                                         fontSize: 15,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w600,
@@ -302,7 +305,7 @@ class _DocInformationsState extends State<DocInformations> {
                                   FittedBox(
                                     child: Icon(
                                       Icons.upload_rounded,
-                                      color: Color(0xff406083),
+                                      color: bluefnc,
                                     ),
                                   ),
                                 ],

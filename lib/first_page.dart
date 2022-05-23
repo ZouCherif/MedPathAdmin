@@ -55,7 +55,9 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: blueclr,
         onPressed: (){
           showDialog(
             context: context,
@@ -145,7 +147,7 @@ class _FirstPageState extends State<FirstPage> {
         child: const Icon(Icons.search),
         
       ),
-      backgroundColor: const Color.fromRGBO(229, 229, 229, 100),
+      backgroundColor: bgcolor,
       body: Column(
         children: [
           const SizedBox(
@@ -160,12 +162,47 @@ class _FirstPageState extends State<FirstPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              const SizedBox(
+                width: 20,
+              ),
+              InkWell(
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(loginRoute, (_) => false);
+                },
+                child: Container(
+                  width: 140,
+                  child: Row(
+                    children: const [
+                      Icon(Icons.exit_to_app,
+                          size: 40, color: Color.fromRGBO(255, 97, 97, 100)),
+                      SizedBox(width: 10.0),
+                      Text(
+                        "Sign Out",
+                        style: TextStyle(
+                            color: Color.fromRGBO(255, 97, 97, 100),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              
+            ],
+          ),
+          const SizedBox(height:10),
                   const FittedBox(
                     child: Text(
                       "let’s add some users ",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color(0xff406083),
+                        color: bluefnc,
                         fontSize: 35,
                       ),
                     ),
@@ -180,7 +217,7 @@ class _FirstPageState extends State<FirstPage> {
                           "Add a new account by filing the boxes below",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Color(0xff406083),
+                            color: bluefnc,
                             fontSize: 25,
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w300,
@@ -485,45 +522,8 @@ class _FirstPageState extends State<FirstPage> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 50,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(
-                width: 20,
-              ),
-              InkWell(
-                onTap: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(loginRoute, (_) => false);
-                },
-                child: Container(
-                  width: 140,
-                  child: Row(
-                    children: const [
-                      Icon(Icons.exit_to_app,
-                          size: 40, color: Color.fromRGBO(255, 97, 97, 100)),
-                      SizedBox(width: 10.0),
-                      Text(
-                        "Sign Out",
-                        style: TextStyle(
-                            color: Color.fromRGBO(255, 97, 97, 100),
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              )
-            ],
-          ),
+          
+          
         ],
       ),
     );
@@ -560,7 +560,7 @@ class RadioGroupWidget extends State {
             ),
           ),
           Radio(
-            activeColor: const Color.fromRGBO(13, 190, 216, 100),
+            activeColor: blueclr,
             value: 1,
             groupValue: id,
             onChanged: (val) {
@@ -583,7 +583,7 @@ class RadioGroupWidget extends State {
             ),
           ),
           Radio(
-            activeColor: const Color.fromRGBO(13, 190, 216, 100),
+            activeColor: blueclr,
             value: 2,
             groupValue: id,
             onChanged: (val) {

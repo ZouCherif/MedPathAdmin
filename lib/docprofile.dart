@@ -16,11 +16,12 @@ class DocProfile extends StatefulWidget {
   @override
   State<DocProfile> createState() => _DocProfileState();
 }
- var imageUrl = "assets/avatar.png";
+ 
 
 class _DocProfileState extends State<DocProfile> {
   late final TextEditingController edit;
   TextEditingController dateinput = TextEditingController();
+  var imageUrl = "assets/avatar.png";
 
   String? formattedDate;
 
@@ -36,6 +37,7 @@ class _DocProfileState extends State<DocProfile> {
     edit.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -45,6 +47,7 @@ class _DocProfileState extends State<DocProfile> {
       if (snapshot.hasData){
       Map content = snapshot.data as Map;
       return Scaffold(
+        resizeToAvoidBottomInset: false,
       appBar: AppBar(
           iconTheme: const IconThemeData(color: bluefnc),
           backgroundColor: bgcolor,
@@ -59,7 +62,7 @@ class _DocProfileState extends State<DocProfile> {
                       width: 146,
                       child: CircleAvatar(
                         radius: 30.0,
-                        backgroundImage: NetworkImage(imageUrl),
+                        backgroundImage: image(content['imgURL'], imageUrl),
                       ),
                     ),
                   ),
@@ -959,3 +962,12 @@ class _DocProfileState extends State<DocProfile> {
 }
 
     
+image(img, imageUrl){
+    if(img != null){
+        imageUrl = img;
+        return NetworkImage(img);
+    }else{
+      return AssetImage(imageUrl);
+    }
+
+}

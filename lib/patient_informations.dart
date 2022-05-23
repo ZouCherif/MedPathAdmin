@@ -10,6 +10,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../colors.dart';
+import 'colors.dart';
 
 
 // ignore: must_be_immutable
@@ -76,20 +77,22 @@ class _PatientInformationsState extends State<PatientInformations> {
         padding: EdgeInsets.only(
             top: 0.09 * size.height,
             bottom: 0.25 * size.height,
-            right: 0.15 * size.width,
-            left: 0.15 * size.width),
+            right: 0.099 * size.width,
+            left: 0.099 * size.width),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             color: Colors.white,
           ),
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               iconTheme: const IconThemeData(color: bluefnc),
               toolbarHeight: 100,
               shadowColor: Colors.transparent,
-              backgroundColor: Colors.transparent,
+              elevation: 0,
+              backgroundColor: Colors.white,
               title: const Text(
                 "General Patient informations",
                 style: TextStyle(
@@ -365,7 +368,7 @@ class _PatientInformationsState extends State<PatientInformations> {
                                       "Height(cm) :",
                                       style: TextStyle(
                                         color: Color(0xff406083),
-                                        fontSize: 13,
+                                        fontSize: 8,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -373,7 +376,7 @@ class _PatientInformationsState extends State<PatientInformations> {
                                   ),
                                   const SizedBox(width: 0.003),
                                   Container(
-                                    width: 0.11 * size.width,
+                                    width: 0.09 * size.width,
                                     height: 0.042 * size.height,
                                     child: TextField(
                                       controller: height,
@@ -396,15 +399,12 @@ class _PatientInformationsState extends State<PatientInformations> {
                                   ),
                                 ),)
                                   ),
-                                  SizedBox(
-                                    width: 0.01 * size.width,
-                                  ),
                                   const FittedBox(
                                     child: Text(
                                       "Weight(Kg) :",
                                       style: TextStyle(
                                         color: Color(0xff406083),
-                                        fontSize: 13,
+                                        fontSize: 8,
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -412,7 +412,7 @@ class _PatientInformationsState extends State<PatientInformations> {
                                   ),
                                   const SizedBox(width: 0.006),
                                   Container(
-                                    width: 0.11 * size.width,
+                                    width: 0.10 * size.width,
                                     height: 0.042 * size.height,
                                     child: TextField(
                                       keyboardType: TextInputType.number,
